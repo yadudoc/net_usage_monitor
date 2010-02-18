@@ -16,7 +16,9 @@ do
 	debug=./debug_info ;
     elif [ "$flag" == "t" ]
     then
-	last=`tail --lines=1 log` ;
+	last=`tail --lines=1 ./log` ;
+	echo "Session not terminated properly. Fixed at"`date` >> debug ;
+	`gksudo /etc/init.d/networking restart`;
 	echo $last | grep "Session Terminated" >> log ;
 	if [ ! "$?" -eq 0 ]
 	then 
@@ -44,6 +46,7 @@ last=`tail --lines=1 log` ;
 echo $last | grep "Session Terminated" ;
 if [ ! "$?" -eq 0 ]
 then 
+    echo "Session not terminated properly. Termination at "`date` >> debug ;
     echo "Session Terminated" >> log ;
 fi
 

@@ -38,8 +38,11 @@ do
 
 # check if you are on the n/w else sleep 
 iwconfig wlan0 | grep "SHAJI-PC_Network" > /dev/null;
+shaji="$?";
+cat /proc/net/route | grep "wlan0" > /dev/null;
+wlan="$?";
 
-if [ $? -eq 0 ] ;
+if [ "$shaji" -eq 0 ] && [ "$wlan" -eq 0 ] ;
 then 
     echo " In shaji network.... going to monitor usage "`date` >> debug ;
     a=`cat /proc/net/dev | grep wlan0` ;
@@ -59,12 +62,35 @@ then
     now_hour=`date +%H`;
     
     # stop logging if  2 AM < now < 8 AM    	
-    if [ "$now_hour" -gt 2 ] && [ "$now_hour" -lt 8 ] ;
+    if [ "$now_hour" -gt 1 ] && [ "$now_hour" -lt 6 ] ;
     then 
 	echo "session closed ( 2 AM - 8 AM ) " >> log ;
-	sleep 1h ;
+	sleep 45m ;
     fi;
-	
+
+   
+    # if last session total is less than the present when starting new 
+    # session replace the update else stop the last one,start new session
+    a=`tail --lines=1 ./log` ;
+    echo $a | grep "Session" ;
+    if [ "$?" -eq 0 ]
+    then 
+	new_session=1 ;
+    else
+        b="Total: ";
+	last_total="${a#*${b}}";
+	b=" mb";
+	last_total="${last_total%${b}*}";
+	b="Total: ";
+	new_total="${line2#*${b}}";
+	b=" mb";
+	new_total="${new_total%${b}*}";
+	if [ "$new_total" -le "$last_total" ] 
+	then
+	    new_session=0 ;
+	fi 
+    fi
+    
     # for new session make new section in log
     if [ "$new_session" -eq 1 ]; 
     then
@@ -95,8 +121,7 @@ else
     # out to the log 
     if [ "$in_between_session" -eq 1 ]
     then
-	
-	echo "Session terminated at "`date` >> log ;
+	echo "Session terminated at "`date` >> debug ;
 	in_between_session=0 ;
     fi
     
