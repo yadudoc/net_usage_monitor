@@ -19,6 +19,7 @@ do
 	last=`tail --lines=1 ./log` ;
 	echo "Session not terminated properly. Fixed at"`date` >> debug ;
 	`gksudo /etc/init.d/networking restart`;
+	`git push origin master`;
 	echo $last | grep "Session Terminated" >> log ;
 	if [ ! "$?" -eq 0 ]
 	then 
