@@ -1,13 +1,12 @@
 @author Yadu Nand B
 @email  yadudoc1729@gmail.com
 
-The source is all free. Use it as you like, and for some crazy reason you make money or something from the code (very unlikely ,but if you do..) feel free to drop in a mail. 
+The source is all free. Use it as you like, and for some crazy reason you make some use or something from the code (very unlikely ,but if you do..)and you feel obliged, feel free to drop in a mail. 
 
-net_usage_monitor is a bash script and is therefore intended for mostly linux.
-The code is very beta'ish and is nowhere near "complete" .
+net_usage_monitor is a bash script and is therefore intended for linux or anything that has a bash shell.The code is very beta'ish and is nowhere near "complete" .
 
-I assumed that the wifi network from which the leased Asianet broadband line is Shaji-PC network , the name of the network here. So if someone is going to use this please edit the netusage.sh . Replacing Shaji-PC network with your network name will be enough. 
+I assumed that the wifi network from which the leased Asianet broadband line is Shaji-PC network ,the name of the network here. So if someone is going to use this please edit the netusage.sh. Replacing Shaji-PC network with your network name will be enough. 
 
-It is also assumed that the wifi is free from 2 - 8 am. Changes to this need some editing. The code is not fully functional around these limits as well.
+It is also assumed that the wifi is free from 2 - 8 am. Changes to this need some editing. The code is not perfectly functional around these limits as well.Now some new fixes try to change that, and it seems things are working better, more testing is needed though.
 
 
