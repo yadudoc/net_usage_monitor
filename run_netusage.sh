@@ -21,7 +21,7 @@ do
 	`gksudo /etc/init.d/networking restart`;
 	`git push origin master`;
 	echo $last | grep "Session Terminated" >> log ;
-	if [ ! "$?" -eq 0 ]
+	if [ ! ${10#$?} -eq 0 ]
 	then 
 	    echo "Session Terminated" ;
 	fi
@@ -45,7 +45,9 @@ flag=1;
 
 last=`tail --lines=1 log` ;
 echo $last | grep "Session Terminated" ;
-if [ ! "$?" -eq 0 ]
+
+# stripping zeroes (confirmed!) and comparing to 0
+if [ ! $((10#$?)) -eq 0 ]
 then 
     echo "Session not terminated properly. Termination at "`date` >> debug ;
     echo "Session Terminated" >> log ;
@@ -61,7 +63,7 @@ do
     
     # handle case of netusage getting killed due to some random
     # -failure clear the last session update
-    if [ ! "$?" -eq 0 ]
+    if [ ! $((10#$?)) -eq 0 ]
     then 
 	flag=1;
 	echo "Session killed at "`date` >> debug ;

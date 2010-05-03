@@ -31,7 +31,6 @@ done ;
 echo "New session value $new_session " >> debug ;
 echo "debug set/reset   $debug" >> debug ;
 
-
 # daemon section begins
 while true ;
 do 
@@ -62,10 +61,10 @@ then
     now_hour=`date +%H`;
     
     # stop logging if  2 AM < now < 8 AM    	
-    if [ "$now_hour" -gt 1 ] && [ "$now_hour" -lt 6 ] ;
+    if [ "$now_hour"!="00" ] && [ "$now_hour" -gt 1 ] && [ "$now_hour" -lt 8 ] ;
     then 
 	echo "session closed ( 2 AM - 8 AM ) " >> log ;
-	sleep 45m ;
+	sleep 10m ;
     fi;
 
    
@@ -73,7 +72,7 @@ then
     # session replace the update else stop the last one,start new session
     a=`tail --lines=1 ./log` ;
     echo $a | grep "Session" ;
-    if [ "$?" -eq 0 ]
+    if [ $? -eq 0 ]
     then 
 	new_session=1 ;
     else
@@ -91,6 +90,9 @@ then
 	fi 
     fi
     
+    now_min=` echo $now_min | sed 's/^[0]*//' ` ; 
+    last_ref_min=` echo $last_ref_min | sed 's/^[0]*//' ` ; 
+
     # for new session make new section in log
     if [ "$new_session" -eq 1 ]; 
     then
@@ -99,7 +101,7 @@ then
 	echo -e "\nSession starting   $now" >> log;
 	echo -e $line1"\t\t"$line2      >> log;
 	new_session=0 ;
-    elif [ "$(($now_min-$last_ref_min))" -lt 3 ] ;
+    elif [ "$((10#$now_min-10#$last_ref_min))" -lt 3 ] ;
     then	
         # if an update was made in the past 2 mins remove that and
 	# replace with the newest update.
