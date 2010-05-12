@@ -68,6 +68,8 @@ do
 	flag=1;
 	echo "Session killed at "`date` >> debug ;
 	session_status=1;	    
+    else
+	exit 0;
     fi ;
     sleep 1s;
 done;

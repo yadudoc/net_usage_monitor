@@ -64,7 +64,8 @@ then
     if [ "$now_hour"!="00" ] && [ "$now_hour" -gt 1 ] && [ "$now_hour" -lt 8 ] ;
     then 
 	echo "session closed ( 2 AM - 8 AM ) " >> log ;
-	sleep 10m ;
+	at -f run_netusage.sh -v 07:58 ;
+	exit 0;
     fi;
 
    
